@@ -1,5 +1,6 @@
 require("dotenv").config();
 const { ApolloServer } = require("apollo-server");
+const { PubSub } = require("graphql-subscriptions");
 const mongoose = require("mongoose");
 
 const typeDefs = require("./graphql/typeDefs");
@@ -15,11 +16,12 @@ mongoose
   });
 
 const PORT = process.env.PORT || 5000;
+const pubsub = new PubSub();
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req }) => ({ req }),
+  context: ({ req }) => ({ req, pubsub }),
 });
 
 server.listen(PORT).then((res) => {
