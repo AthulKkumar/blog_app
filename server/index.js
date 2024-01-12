@@ -24,6 +24,9 @@ const server = new ApolloServer({
   context: ({ req }) => ({ req, pubsub }),
 });
 
-server.listen(PORT).then((res) => {
-  console.log(` Server running at ${res.url}`);
-});
+server
+  .listen(PORT)
+  .then((res) => {
+    console.log(` Server running at ${res.url}`);
+  })
+  .catch((err) => console.log(err));
