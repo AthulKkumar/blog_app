@@ -1,24 +1,30 @@
 import * as React from "react";
 import { useQuery } from "@apollo/client";
-import gql from "graphql-tag";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
+import CircularProgress from "@mui/material/CircularProgress";
 
+import { FETCH_POSTS_QUERY } from "../utils/graphql/fetchPostQuery";
+import { AuthContext } from "../context/authContext";
 import PostCard from "../components/PostCard";
+import PostForm from "../components/PostForm";
 
 const Home = () => {
+  const { user } = React.useContext(AuthContext);
   const { loading, data } = useQuery(FETCH_POSTS_QUERY);
   const posts = data?.getPosts;
 
   return (
     <Box sx={{ flexGrow: 1 }}>
+      <h1>Recent Posts</h1>
+      {user && <PostForm />}
       <Grid
         container
         spacing={{ xs: 2, md: 3 }}
         columns={{ xs: 4, sm: 8, md: 12 }}
       >
         {loading ? (
-          <h3>Loading the posts....</h3>
+          <CircularProgress color="secondary" />
         ) : (
           posts &&
           posts.map((post) => {
@@ -33,27 +39,5 @@ const Home = () => {
     </Box>
   );
 };
-
-const FETCH_POSTS_QUERY = gql`
-  {
-    getPosts {
-      id
-      body
-      username
-      likeCount
-      likes {
-        username
-        createdAt
-      }
-      commentCount
-      comments {
-        id
-        username
-        createdAt
-        body
-      }
-    }
-  }
-`;
 
 export default Home;
