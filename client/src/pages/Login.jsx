@@ -8,9 +8,11 @@ import Alert from "@mui/material/Alert";
 import { useNavigate } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client";
 
+import { AuthContext } from "../context/authContext";
 import useForm from "../utils/hooks/useForm";
 
 export default function Login(props) {
+  const context = React.useContext(AuthContext);
   const [errors, setErrors] = React.useState({});
   const navigate = useNavigate();
   const { handleChange, handleSubmit, value } = useForm(loginUserCallback, {
@@ -19,8 +21,9 @@ export default function Login(props) {
   });
 
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
-    update(proxy, result) {
-      console.log(result);
+    update(proxy, { data: { login: userData } }) {
+      console.log(userData);
+      context.login(userData);
       navigate("/");
     },
     onError(err) {
