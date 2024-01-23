@@ -3,6 +3,7 @@ import { useQuery } from "@apollo/client";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import CircularProgress from "@mui/material/CircularProgress";
+import Grow from "@mui/material/Grow";
 
 import { FETCH_POSTS_QUERY } from "../utils/graphql/fetchPostQuery";
 import { AuthContext } from "../context/authContext";
@@ -29,9 +30,11 @@ const Home = () => {
           posts &&
           posts.map((post) => {
             return (
-              <Grid item xs={2} sm={4} md={4} key={post.id}>
-                <PostCard post={post} />
-              </Grid>
+              <Grow in={true} timeout={1000} key={post.id}>
+                <Grid item xs={2} sm={4} md={4} key={post.id}>
+                  <PostCard post={post} />
+                </Grid>
+              </Grow>
             );
           })
         )}

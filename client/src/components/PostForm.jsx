@@ -54,6 +54,8 @@ export default function PostForm() {
           name="body"
           value={value.body}
           onChange={handleChange}
+          error={error ? true : false}
+          helperText={error ? error.graphQLErrors[0].message : ""}
         />
       </div>
       <Button

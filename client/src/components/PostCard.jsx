@@ -1,5 +1,4 @@
 import * as React from "react";
-import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
@@ -14,6 +13,11 @@ import CommentIcon from "@mui/icons-material/Comment";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Link } from "react-router-dom";
 import Badge from "@mui/material/Badge";
+import Button from "@mui/material/Button";
+import DeleteIcon from "@mui/icons-material/Delete";
+
+import { AuthContext } from "../context/authContext";
+import LikeButton from "./LikeButton";
 
 export default function PostCard({
   post: {
@@ -28,6 +32,7 @@ export default function PostCard({
   },
 }) {
   const [expanded, setExpanded] = React.useState(false);
+  const { user } = React.useContext(AuthContext);
 
   return (
     <Card sx={{ maxWidth: 345, marginTop: 5 }}>
@@ -59,16 +64,19 @@ export default function PostCard({
         </Link>
       </CardContent>
       <CardActions disableSpacing>
-        <Badge color="secondary" badgeContent={likeCount}>
-          <IconButton aria-label="add to favorites">
-            <FavoriteIcon />
-          </IconButton>
-        </Badge>
-        <Badge color="primary" badgeContent={commentCount}>
-          <IconButton aria-label="share">
-            <CommentIcon />
-          </IconButton>
-        </Badge>
+        <LikeButton user={user} post={{ id, likes, likeCount }} />
+        <Link to={`/posts/${id}`}>
+          <Badge color="primary" badgeContent={commentCount}>
+            <IconButton aria-label="share">
+              <CommentIcon />
+            </IconButton>
+          </Badge>
+        </Link>
+        {user && user.username === username && (
+          <Button variant="outlined" color="error" startIcon={<DeleteIcon />}>
+            Delete Post
+          </Button>
+        )}
       </CardActions>
     </Card>
   );
