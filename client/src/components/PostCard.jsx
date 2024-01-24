@@ -8,16 +8,14 @@ import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import CommentIcon from "@mui/icons-material/Comment";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Link } from "react-router-dom";
 import Badge from "@mui/material/Badge";
-import Button from "@mui/material/Button";
-import DeleteIcon from "@mui/icons-material/Delete";
 
 import { AuthContext } from "../context/authContext";
 import LikeButton from "./LikeButton";
+import DeleteButton from "./Button/DeleteButton";
 
 export default function PostCard({
   post: {
@@ -30,6 +28,7 @@ export default function PostCard({
     likes,
     comments,
   },
+  callback,
 }) {
   const [expanded, setExpanded] = React.useState(false);
   const { user } = React.useContext(AuthContext);
@@ -73,9 +72,7 @@ export default function PostCard({
           </Badge>
         </Link>
         {user && user.username === username && (
-          <Button variant="outlined" color="error" startIcon={<DeleteIcon />}>
-            Delete Post
-          </Button>
+          <DeleteButton postId={id} callback={callback} />
         )}
       </CardActions>
     </Card>

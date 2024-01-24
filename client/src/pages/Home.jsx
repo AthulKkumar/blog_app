@@ -2,13 +2,13 @@ import * as React from "react";
 import { useQuery } from "@apollo/client";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import CircularProgress from "@mui/material/CircularProgress";
 import Grow from "@mui/material/Grow";
 
 import { FETCH_POSTS_QUERY } from "../utils/graphql/fetchPostQuery";
 import { AuthContext } from "../context/authContext";
 import PostCard from "../components/PostCard";
 import PostForm from "../components/PostForm";
+import Loader from "../components/Loader/Loader";
 
 const Home = () => {
   const { user } = React.useContext(AuthContext);
@@ -25,7 +25,7 @@ const Home = () => {
         columns={{ xs: 4, sm: 8, md: 12 }}
       >
         {loading ? (
-          <CircularProgress color="secondary" />
+          <Loader />
         ) : (
           posts &&
           posts.map((post) => {

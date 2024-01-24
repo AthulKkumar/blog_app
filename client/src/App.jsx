@@ -10,6 +10,7 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import NavigationBar from "./components/NavigationBar";
 import AuthRoute from "./utils/protectedRoute";
+import SinglePost from "./pages/SinglePost";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
               path="/register"
               element={<AuthRoute Component={Register} />}
             />
+            <Route exact path="/posts/:postId" element={<SinglePost />} />
           </Routes>
         </Router>
       </AuthProvider>
