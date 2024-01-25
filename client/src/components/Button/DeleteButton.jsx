@@ -19,6 +19,7 @@ const DeleteButton = ({ postId, callback }) => {
         query: FETCH_POSTS_QUERY,
         data: { getPosts: [...newData] },
       });
+
       if (callback) callback();
     },
     variables: { postId },

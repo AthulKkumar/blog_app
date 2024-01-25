@@ -7,6 +7,7 @@ import {
   ApolloProvider,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
+import { NextUIProvider } from "@nextui-org/react";
 
 const authLink = setContext(() => {
   const token = localStorage.getItem("token");
@@ -29,6 +30,8 @@ const client = new ApolloClient({
 
 export default (
   <ApolloProvider client={client}>
-    <App />
+    <NextUIProvider>
+      <App />
+    </NextUIProvider>
   </ApolloProvider>
 );

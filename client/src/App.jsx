@@ -5,7 +5,7 @@ import "./App.css";
 
 import { AuthProvider } from "./context/authContext";
 
-import Login from "./pages/Login";
+import Login from "./pages/Login/Login.jsx";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import NavigationBar from "./components/NavigationBar";
