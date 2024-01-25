@@ -6,7 +6,7 @@ import "./App.css";
 import { AuthProvider } from "./context/authContext";
 
 import Login from "./pages/Login/Login.jsx";
-import Register from "./pages/Register";
+import Register from "./pages/Register/Register.jsx";
 import Home from "./pages/Home";
 import NavigationBar from "./components/NavigationBar";
 import AuthRoute from "./utils/protectedRoute";

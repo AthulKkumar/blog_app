@@ -5,26 +5,30 @@ import { EyeFilledIcon } from "../../assets/Icons/EyeFilledIcon";
 import { EyeSlashFilledIcon } from "../../assets/Icons/EyeSlashFilledIcon";
 import { Card, CardHeader, CardBody } from "@nextui-org/react";
 import { Button } from "@nextui-org/react";
-import { useMutation } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@apollo/client";
 
 import { AuthContext } from "../../context/authContext";
+import { REGISTER_USER_MUTATION } from "../../utils/graphql/mutation/registerUserMutation";
 import useForm from "../../utils/hooks/useForm";
 
-import { LOGIN_USER_MUTATION } from "../../utils/graphql/mutation/loginUserMutation";
-
-export default function Login() {
+export default function Register() {
+  const [isVisible, setIsVisible] = React.useState(false);
   const context = React.useContext(AuthContext);
   const [errors, setErrors] = React.useState({});
   const navigate = useNavigate();
-  const { handleChange, handleSubmit, value } = useForm(loginCallback, {
+  const initialState = {
     username: "",
+    email: "",
     password: "",
-  });
-  const [isVisible, setIsVisible] = React.useState(false);
-
-  const [loginUser, { loading }] = useMutation(LOGIN_USER_MUTATION, {
-    update(cache, { data: { login: userData } }) {
+    confirmPassword: "",
+  };
+  const { handleChange, handleSubmit, value } = useForm(
+    registerUser,
+    initialState
+  );
+  const [addUser, { loading }] = useMutation(REGISTER_USER_MUTATION, {
+    update(cache, { data: { register: userData } }) {
       context.login(userData);
       navigate("/");
     },
@@ -36,21 +40,21 @@ export default function Login() {
 
   const toggleVisibility = () => setIsVisible(!isVisible);
 
-  function loginCallback() {
-    loginUser();
+  function registerUser() {
+    addUser();
   }
 
   return (
     <Card className="py-4 w-1/4 m-auto mt-16">
       <CardHeader className="pb-0 pt-2 px-4 flex-col items-center">
-        <h4 className="font-bold text-large"> Login</h4>
+        <h4 className="font-bold text-large"> Create An Account</h4>
       </CardHeader>
       <CardBody className="overflow-visible py-2">
         <div className="flex flex-col gap-4  items-center">
           <Input
-            type="email"
-            label="Email"
-            placeholder="you@example.com"
+            type="text"
+            label="Username"
+            placeholder="Enter your username"
             labelPlacement="outside"
             endContent={
               <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
@@ -61,6 +65,21 @@ export default function Login() {
             color={errors.username ? "danger" : ""}
             onChange={handleChange}
             errorMessage={errors.username}
+          />
+          <Input
+            type="email"
+            label="Email"
+            placeholder="you@example.com"
+            labelPlacement="outside"
+            endContent={
+              <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+            }
+            className="max-w-xs"
+            name="email"
+            value={value.email}
+            color={errors.email ? "danger" : ""}
+            onChange={handleChange}
+            errorMessage={errors.email}
           />
           <Input
             label="Password"
@@ -87,16 +106,41 @@ export default function Login() {
             onChange={handleChange}
             errorMessage={errors.password}
           />
+          <Input
+            label="Confirm Password"
+            labelPlacement="outside"
+            placeholder="Enter your password"
+            endContent={
+              <button
+                className="focus:outline-none"
+                type="button"
+                onClick={toggleVisibility}
+              >
+                {isVisible ? (
+                  <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                ) : (
+                  <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                )}
+              </button>
+            }
+            type={isVisible ? "text" : "password"}
+            className="max-w-xs "
+            name="confirmPassword"
+            value={value.confirmPassword}
+            color={errors.confirmPassword ? "danger" : ""}
+            onChange={handleChange}
+            errorMessage={errors.confirmPassword}
+          />
 
           <div className="flex items-center space-x-4">
             <p
-              onClick={() => navigate("/register")}
+              onClick={() => navigate("/login")}
               className="text-default-500 text-center cursor-pointer"
             >
-              Create An Account?
+              Already have an Account?
             </p>
-            <Button color="primary" isLoading={loading} onClick={handleSubmit}>
-              Enter
+            <Button color="primary" onClick={handleSubmit} isLoading={loading}>
+              Join Now
             </Button>
           </div>
         </div>
