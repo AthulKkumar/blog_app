@@ -1,80 +1,55 @@
-import * as React from "react";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-import Avatar from "@mui/material/Avatar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import { red } from "@mui/material/colors";
-import CommentIcon from "@mui/icons-material/Comment";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import React from "react";
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  Image,
+  Avatar,
+  CardFooter,
+  Divider,
+} from "@nextui-org/react";
 import { Link } from "react-router-dom";
-import Badge from "@mui/material/Badge";
 
 import { AuthContext } from "../context/authContext";
 import LikeButton from "./LikeButton";
 import DeleteButton from "./Button/DeleteButton";
 
 export default function PostCard({
-  post: {
-    body,
-    createdAt,
-    id,
-    username,
-    likeCount,
-    commentCount,
-    likes,
-    comments,
-  },
+  post: { body, createdAt, id, username, likeCount, likes },
   callback,
 }) {
-  const [expanded, setExpanded] = React.useState(false);
   const { user } = React.useContext(AuthContext);
 
   return (
-    <Card sx={{ maxWidth: 345, marginTop: 5 }}>
-      <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            {username[0]}
-          </Avatar>
-        }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
-        title={username}
-        subheader={createdAt}
-      />
-      <CardMedia
-        component="img"
-        height="194"
-        image="https://picsum.photos/200/300?grayscale"
-        alt="Paella dish"
-      />
-      <CardContent>
-        <Link to={`/posts/${id}`}>
-          <Typography variant="body2" color="text.secondary">
-            {body}
-          </Typography>
-        </Link>
-      </CardContent>
-      <CardActions disableSpacing>
+    <Card className="py-4 w-full">
+      <CardHeader className="pb-0 pt-2  flex ">
+        <Avatar
+          isBordered
+          radius="md"
+          src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+        />
+        <div className="ml-2">
+          <h4 className="font-bold text-medium">{username}</h4>
+          <small className="text-default-500">{createdAt}</small>
+        </div>
+      </CardHeader>
+      <CardBody className="overflow-visible py-2">
+        <p>{body}</p>
+        <Image
+          alt="Card background"
+          className="object-cover rounded-xl"
+          src="https://picsum.photos/200/300?grayscale"
+          // width={270}
+        />
+      </CardBody>
+      <Divider />
+      <CardFooter>
         <LikeButton user={user} post={{ id, likes, likeCount }} />
-        <Link to={`/posts/${id}`}>
-          <Badge color="primary" badgeContent={commentCount}>
-            <IconButton aria-label="share">
-              <CommentIcon />
-            </IconButton>
-          </Badge>
-        </Link>
+        <Link to={`/posts/${id}`}>Commetn</Link>
         {user && user.username === username && (
           <DeleteButton postId={id} callback={callback} />
         )}
-      </CardActions>
+      </CardFooter>
     </Card>
   );
 }

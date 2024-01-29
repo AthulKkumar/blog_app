@@ -7,7 +7,7 @@ import Grow from "@mui/material/Grow";
 import { FETCH_POSTS_QUERY } from "../utils/graphql/fetchPostQuery";
 import { AuthContext } from "../context/authContext";
 import PostCard from "../components/PostCard";
-import PostForm from "../components/PostForm";
+import PostForm from "../components/PostForm/PostForm.jsx";
 import Loader from "../components/Loader/Loader";
 
 const Home = () => {
@@ -16,30 +16,26 @@ const Home = () => {
   const posts = data?.getPosts;
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <h1>Recent Posts</h1>
-      {user && <PostForm />}
-      <Grid
-        container
-        spacing={{ xs: 2, md: 3 }}
-        columns={{ xs: 4, sm: 8, md: 12 }}
-      >
-        {loading ? (
-          <Loader />
-        ) : (
-          posts &&
-          posts.map((post) => {
-            return (
-              <Grow in={true} timeout={1000} key={post.id}>
-                <Grid item xs={2} sm={4} md={4} key={post.id}>
-                  <PostCard post={post} />
-                </Grid>
-              </Grow>
-            );
-          })
-        )}
-      </Grid>
-    </Box>
+    <>
+      {user && (
+        <div className="mt-2">
+          <PostForm />
+        </div>
+      )}
+
+      {loading ? (
+        <Loader />
+      ) : (
+        posts &&
+        posts.map((post, indx) => {
+          return (
+            <div className="w-full p-2" key={indx}>
+              <PostCard post={post} />
+            </div>
+          );
+        })
+      )}
+    </>
   );
 };
 
