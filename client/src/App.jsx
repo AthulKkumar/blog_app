@@ -8,7 +8,7 @@ import { AuthProvider } from "./context/authContext";
 import Login from "./pages/Login/Login.jsx";
 import Register from "./pages/Register/Register.jsx";
 import Home from "./pages/Home";
-import NavigationBar from "./components/NavigationBar";
+import NavigationBar from "./components/Navbar/NavigationBar.jsx";
 import AuthRoute from "./utils/protectedRoute";
 import SinglePost from "./pages/SinglePost";
 
